@@ -17,6 +17,10 @@ public class MealService {
         return mealRepository.findAll();
     }
 
+    public List<Meal> getAllMealsOfDay(String fecha) {
+        return mealRepository.findMealsByfecha(fecha);
+    }
+
     public Meal getMealById(String id) {
         Meal meal = null;
         Optional<Meal> optionalMeal = mealRepository.findById(id);
