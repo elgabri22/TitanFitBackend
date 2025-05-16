@@ -21,13 +21,18 @@ public class ApiUser {
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping("/api/user/{id}")
-    public ResponseEntity<User> getUser(@PathVariable String id) {
-        return ResponseEntity.ok(userService.findById(id));
+    @GetMapping("/api/user/{email}")
+    public ResponseEntity<User> getUser(@PathVariable String email) {
+        return ResponseEntity.ok(userService.findByEmail(email));
     }
 
     @PostMapping("/api/user")
     public ResponseEntity<User> addUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.save(user));
+    }
+
+    @PostMapping("/api/update")
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.save(user));
     }
 }

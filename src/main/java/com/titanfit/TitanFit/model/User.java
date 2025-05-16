@@ -18,6 +18,7 @@ public class User {
     private double height;
     private List<Meal> meals;
     private UserGoal goals;
+    private String token;
 
     public User() {}
 
@@ -31,6 +32,27 @@ public class User {
         this.height = height;
         this.goals = goals;
         this.meals = meals;
+    }
+
+    public User(String name, String email, String password, int age, double weight, double height, UserGoal goals, List<Meal> meals,String token) {
+        this.id = null;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.age = age;
+        this.weight = weight;
+        this.height = height;
+        this.goals = goals;
+        this.meals = meals;
+        this.token=token;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     // Getters y Setters

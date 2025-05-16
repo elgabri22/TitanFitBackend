@@ -26,6 +26,15 @@ public class UserService {
         return User;
     }
 
+    public User findByEmail(String email) {
+        User User=null;
+        Optional<User> user = this.userRepositorty.findByEmail(email);
+        if (user.isPresent()) {
+            User=user.get();
+        }
+        return User;
+    }
+
     public User save(User user) {
         return this.userRepositorty.save(user);
     }
