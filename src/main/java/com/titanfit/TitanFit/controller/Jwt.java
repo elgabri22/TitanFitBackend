@@ -37,6 +37,7 @@ public class Jwt {
 
     @PostMapping("/generateToken")
     public ResponseEntity<String> authenticateAndGetToken(@RequestBody User user) {
+        System.out.printf(user.getEmail()+" "+user.getPassword());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
         );
