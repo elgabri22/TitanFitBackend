@@ -3,6 +3,7 @@ package com.titanfit.TitanFit.service;
 import com.titanfit.TitanFit.model.User;
 import com.titanfit.TitanFit.repository.UserRepositorty;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepositorty userRepositorty;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<User> findAll() {
         return this.userRepositorty.findAll();
@@ -36,6 +39,8 @@ public class UserService {
     }
 
     public User save(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return this.userRepositorty.save(user);
     }
 

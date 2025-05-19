@@ -14,6 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class Jwt {
@@ -23,11 +26,10 @@ public class Jwt {
 
     private UserRepositorty usuarioRepository;
 
+    @Autowired
     public Jwt(UserRepositorty usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
-
-    public Jwt(){}
 
     @Autowired
     private JwtService jwtService;
@@ -36,18 +38,27 @@ public class Jwt {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/generateToken")
-    public ResponseEntity<String> authenticateAndGetToken(@RequestBody User user) {
-        System.out.printf(user.getEmail()+" "+user.getPassword());
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
-        );
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody User user) {
+        System.out.printf(user.getEmail() + " " + user.getPassword());
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+            );
 
-        if (authentication.isAuthenticated()) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String token = jwtService.generateToken(userDetails.getUsername()); // Obtener el email del principal autenticado
-            return ResponseEntity.ok(token);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario o contraseña incorrectos");
+            if (authentication.isAuthenticated()) {
+                UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+                String token = jwtService.generateToken(userDetails.getUsername()); // Obtener el email del principal autenticado
+                user.setToken(token);
+                usuarioRepository.save(user);
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Token generado correctamente");
+                response.put("token", token);
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(user.getEmail()+" "+user.getPassword());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(user.getEmail()+" "+user.getPassword());
         }
     }
 
