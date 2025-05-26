@@ -5,9 +5,7 @@ import com.titanfit.TitanFit.repository.UserRepositorty;
 import com.titanfit.TitanFit.service.MealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,5 +19,22 @@ public class ApiMeal {
         List<Meal> meals = mealService.getAllMealsOfDay(fecha);
         return ResponseEntity.ok(meals);
     }
+
+    @PostMapping("/delete/meal/{id}")
+    private ResponseEntity<String> delete(@PathVariable String id){
+        try {
+            mealService.deleteMeal(id);
+            return ResponseEntity.ok().build(); // 200 OK sin contenido
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build(); // 404 si no se encuentra
+        }
+    }
+
+    @PostMapping("/add/meal")
+    public ResponseEntity<Meal> add(@RequestBody Meal meal){
+        mealService.addMeal(meal);;
+        return ResponseEntity.ok(meal);
+    }
+
 
 }

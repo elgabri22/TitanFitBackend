@@ -17,11 +17,12 @@ public class Meal {
     private double fats;
     private String tipo;
     private String fecha;
+    private String foto;
 
     public Meal() {
     }
 
-    public Meal(String id, String name, int calories, double protein, double carbs, double fats, String tipo, String fecha) {
+    public Meal(String id, String name, int calories, double protein, double carbs, double fats, String tipo, String fecha,String foto) {
         this.id = id;
         this.name = name;
         this.calories = calories;
@@ -30,6 +31,15 @@ public class Meal {
         this.fats = fats;
         this.tipo=tipo;
         this.fecha=fecha;
+        this.foto=foto;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     // Getters y Setters
