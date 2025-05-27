@@ -11,6 +11,7 @@ public class Meal {
     @Id
     private String id;
     private String name;
+    private User user;
     private int calories;
     private double protein;
     private double carbs;
@@ -22,7 +23,15 @@ public class Meal {
     public Meal() {
     }
 
-    public Meal(String id, String name, int calories, double protein, double carbs, double fats, String tipo, String fecha,String foto) {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Meal(String id, String name, int calories, double protein, double carbs, double fats, String tipo, String fecha, String foto, User user) {
         this.id = id;
         this.name = name;
         this.calories = calories;
@@ -30,6 +39,7 @@ public class Meal {
         this.carbs = carbs;
         this.fats = fats;
         this.tipo=tipo;
+        this.user=user;
         this.fecha=fecha;
         this.foto=foto;
     }

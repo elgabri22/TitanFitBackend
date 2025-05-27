@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -14,10 +15,16 @@ public class ApiMeal {
     @Autowired
     private MealService mealService;
 
-    @GetMapping("/meals/{fecha}")
-    public ResponseEntity<List<Meal>> getMeals(@PathVariable String fecha) {
+    @GetMapping("/meals/{fecha}/{id}")
+    public ResponseEntity<List<Meal>> getMeals(@PathVariable String fecha,@PathVariable String id) {
         List<Meal> meals = mealService.getAllMealsOfDay(fecha);
-        return ResponseEntity.ok(meals);
+        List<Meal>mealsusuario=new ArrayList<Meal>();
+        for (Meal meal: meals) {
+            if (meal.getUser().getId().equals(id)) {
+                mealsusuario.add(meal);
+            }
+        }
+        return ResponseEntity.ok(mealsusuario);
     }
 
     @PostMapping("/delete/meal/{id}")
