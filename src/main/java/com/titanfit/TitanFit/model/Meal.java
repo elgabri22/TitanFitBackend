@@ -19,6 +19,7 @@ public class Meal {
     private String tipo;
     private String fecha;
     private String foto;
+    private double gramos;
 
     public Meal() {
     }
@@ -31,7 +32,15 @@ public class Meal {
         this.user = user;
     }
 
-    public Meal(String id, String name, int calories, double protein, double carbs, double fats, String tipo, String fecha, String foto, User user) {
+    public double getGramos() {
+        return gramos;
+    }
+
+    public void setGramos(double gramos) {
+        this.gramos = gramos;
+    }
+
+    public Meal(String id, String name, int calories, double protein, double carbs, double fats, String tipo, String fecha, String foto, User user, double gramos) {
         this.id = id;
         this.name = name;
         this.calories = calories;
@@ -42,6 +51,7 @@ public class Meal {
         this.user=user;
         this.fecha=fecha;
         this.foto=foto;
+        this.gramos=gramos;
     }
 
     public String getFoto() {

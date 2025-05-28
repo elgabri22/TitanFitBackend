@@ -33,6 +33,7 @@ public class ApiUser {
 
     @PostMapping("/api/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.save(user));
+        userService.save(user);
+        return ResponseEntity.ok().build();
     }
 }

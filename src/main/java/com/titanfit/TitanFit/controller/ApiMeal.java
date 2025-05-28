@@ -39,8 +39,8 @@ public class ApiMeal {
 
     @PostMapping("/add/meal")
     public ResponseEntity<Meal> add(@RequestBody Meal meal){
-        mealService.addMeal(meal);;
-        return ResponseEntity.ok(meal);
+        Meal meal1=mealService.addMeal(meal);
+        return ResponseEntity.ok(meal1);
     }
 
 

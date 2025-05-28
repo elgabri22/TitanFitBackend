@@ -3,6 +3,8 @@ package com.titanfit.TitanFit.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
 @Document(collection = "foods")
 public class Food {
 
@@ -73,5 +75,12 @@ public class Food {
 
     public void setFats(double fats) {
         this.fats = fats;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Food food = (Food) o;
+        return calories == food.calories && Double.compare(protein, food.protein) == 0 && Double.compare(carbs, food.carbs) == 0 && Double.compare(fats, food.fats) == 0 && Objects.equals(id, food.id) && Objects.equals(name, food.name);
     }
 }
