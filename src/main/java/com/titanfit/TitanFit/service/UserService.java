@@ -44,7 +44,7 @@ public class UserService {
         return this.userRepositorty.save(user);
     }
 
-    public void delete(User user) {
-        this.userRepositorty.delete(user);
+    public void delete(String id) {
+        this.userRepositorty.deleteById(id);
     }
 }

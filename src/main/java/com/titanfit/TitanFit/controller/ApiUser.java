@@ -36,4 +36,10 @@ public class ApiUser {
         userService.save(user);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/api/delete/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable String id) {
+        userService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }
