@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface MealRepository extends MongoRepository<Meal, String> {
     List<Meal> findMealsByfecha (String fecha);
+    List<Meal> findByfechaBetween(String startDate, String endDate);
 }

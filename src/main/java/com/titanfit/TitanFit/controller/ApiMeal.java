@@ -27,6 +27,18 @@ public class ApiMeal {
         return ResponseEntity.ok(mealsusuario);
     }
 
+    @GetMapping("/meals/{fecha_inicio}/{fecha_fin}/{id_user}")
+    public ResponseEntity<List<Meal>> getMealsBYDate(@PathVariable String fecha_inicio,@PathVariable String fecha_fin,@PathVariable String id_user) {
+        List<Meal> comidasSemana=mealService.listaComidasSEmana(fecha_inicio,fecha_fin);
+        List<Meal>comidasSemanaUsuario=new ArrayList<Meal>();
+        for (Meal meal: comidasSemana){
+            if (meal.getUser().getId().equalsIgnoreCase(id_user)){
+                comidasSemanaUsuario.add(meal);
+            }
+        }
+        return ResponseEntity.ok(comidasSemanaUsuario);
+    }
+
     @PostMapping("/delete/meal/{id}")
     private ResponseEntity<String> delete(@PathVariable String id){
         try {

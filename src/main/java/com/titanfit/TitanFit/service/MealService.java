@@ -34,6 +34,10 @@ public class MealService {
         return mealRepository.save(meal);
     }
 
+    public List<Meal>listaComidasSEmana(String fecha_inicio, String fecha_fin){
+        return mealRepository.findByfechaBetween(fecha_inicio,fecha_fin);
+    }
+
     public Meal updateMeal(Meal meal) {
         return mealRepository.save(meal);
     }
