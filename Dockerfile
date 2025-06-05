@@ -1,26 +1,28 @@
 # Usa una imagen base de OpenJDK, ligera y optimizada para la JVM
 FROM openjdk:17-jdk-slim
 
+# Instala Maven
+RUN apt-get update && \
+    apt-get install -y maven && \
+    rm -rf /var/lib/apt/lists/*
+
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia el archivo JAR de tu aplicación al contenedor
-# Reemplaza "tu-aplicacion.jar" con la ruta y nombre real de tu JAR
-# Por ejemplo, si usas Gradle, podría ser "build/libs/mi-app.jar"
-# Si tu JAR se llama "my-awesome-app-0.0.1-SNAPSHOT.jar", el COPY sería:
-# COPY target/my-awesome-app-0.1.0-SNAPSHOT.jar app.jar
-#
-# Basado en tu árbol de proyecto, tu JAR probable se llama TitanFit-0.0.1-SNAPSHOT.jar
-# Así que el COPY más probable para tu caso sería:
+# Copia los archivos de tu proyecto al contenedor
+COPY . .
+
+# Ejecuta el comando para compilar el proyecto y generar el JAR
+RUN mvn clean install
+
+# Copia el JAR generado al contenedor, normalmente Maven lo pone en target/
 COPY target/TitanFit-0.0.1-SNAPSHOT.jar titanfit.jar
 
 # Expone el puerto por defecto de Spring Boot (8080)
 EXPOSE 8080
 
 # Define la entrada principal del contenedor cuando se inicie
-# Ejecuta la aplicación Spring Boot
-# Asegúrate de que "titanfit.jar" coincida con el nombre que le diste al JAR al copiarlo.
 ENTRYPOINT ["java","-jar","titanfit.jar"]
 
-# Opcional: Puedes añadir argumentos por defecto aquí, por ejemplo para perfiles de Spring
+# Opcional: puedes añadir argumentos por defecto aquí, por ejemplo para perfiles de Spring
 # CMD ["--spring.profiles.active=prod"]
