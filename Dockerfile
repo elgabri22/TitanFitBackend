@@ -15,9 +15,6 @@ COPY . .
 # Ejecuta el comando para compilar el proyecto y generar el JAR
 RUN mvn clean install
 
-# Copia el JAR generado al contenedor, normalmente Maven lo pone en target/
-COPY target/TitanFit-0.0.1-SNAPSHOT.jar titanfit.jar
-
 # Expone el puerto por defecto de Spring Boot (8080)
 EXPOSE 8080
 
