@@ -9,11 +9,15 @@ RUN apt-get update && \
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copia los archivos de tu proyecto al contenedor
-COPY . .
+# Copia los archivos fuente del proyecto (sin target/)
+COPY pom.xml .
+COPY src ./src
 
 # Ejecuta el comando para compilar el proyecto y generar el JAR
 RUN mvn clean install
+
+# 🔥 Copia el JAR generado a un nombre estándar
+RUN cp target/*.jar titanfit.jar
 
 # Expone el puerto por defecto de Spring Boot (8080)
 EXPOSE 8080
@@ -21,5 +25,3 @@ EXPOSE 8080
 # Define la entrada principal del contenedor cuando se inicie
 ENTRYPOINT ["java","-jar","titanfit.jar"]
 
-# Opcional: puedes añadir argumentos por defecto aquí, por ejemplo para perfiles de Spring
-# CMD ["--spring.profiles.active=prod"]
