@@ -28,15 +28,25 @@ public class ApiMeal {
     }
 
     @GetMapping("/meals/{fecha_inicio}/{fecha_fin}/{id_user}")
-    public ResponseEntity<List<Meal>> getMealsBYDate(@PathVariable String fecha_inicio,@PathVariable String fecha_fin,@PathVariable String id_user) {
-        List<Meal> comidasSemana=mealService.listaComidasSEmana(fecha_inicio,fecha_fin);
-        List<Meal>comidasSemanaUsuario=new ArrayList<Meal>();
-        for (Meal meal: comidasSemana){
-            if (meal.getUser().getId().equalsIgnoreCase(id_user)){
+    public ResponseEntity<List<Meal>> getMealsBYDate(
+            @PathVariable String fecha_inicio,
+            @PathVariable String fecha_fin,
+            @PathVariable String id_user
+    ) {
+        List<Meal> comidasSemana = mealService.listaComidasSEmana(fecha_inicio, fecha_fin);
+        List<Meal> comidasSemanaUsuario = new ArrayList<>(); // Use diamond operator for conciseness
+
+        if (comidasSemana == null) { // Defensive check: if service returns null
+            return ResponseEntity.ok(new ArrayList<>()); // Return an empty list instead of null
+        }
+
+        for (Meal meal : comidasSemana) {
+            // Check if meal.getUser() is not null before trying to get its ID
+            if (meal.getUser() != null && meal.getUser().getId() != null && meal.getUser().getId().equalsIgnoreCase(id_user)) {
                 comidasSemanaUsuario.add(meal);
             }
         }
-        return ResponseEntity.ok(comidasSemanaUsuario);
+        return ResponseEntity.ok(comidasSemanaUsuario); // <--- Corrected variable name
     }
 
     @PostMapping("/delete/meal/{id}")
