@@ -7,7 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,22 +38,34 @@ public class ApiMeal {
             @PathVariable String fecha_inicio,
             @PathVariable String fecha_fin,
             @PathVariable String id_user
-    ) {
-        List<Meal> comidasSemana = mealService.listaComidasSEmana(fecha_inicio, fecha_fin);
-        List<Meal> comidasSemanaUsuario = new ArrayList<>(); // Use diamond operator for conciseness
+    ) throws ParseException {
+        // Traemos todas las comidas sin filtro de fechas
+        List<Meal> todasComidas = mealService.getAllMeals();
 
-        if (comidasSemana == null) { // Defensive check: if service returns null
-            return ResponseEntity.ok(new ArrayList<>()); // Return an empty list instead of null
-        }
+        List<Meal> comidasSemanaUsuario = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-        for (Meal meal : comidasSemana) {
-            // Check if meal.getUser() is not null before trying to get its ID
-            if (meal.getUser() != null && meal.getUser().getId() != null && meal.getUser().getId().equalsIgnoreCase(id_user)) {
-                comidasSemanaUsuario.add(meal);
+        // Parseamos fechas límite
+        Date fechainicio = sdf.parse(fecha_inicio);
+        Date fechafin = sdf.parse(fecha_fin);
+
+        for (Meal meal : todasComidas) {
+            if (meal.getUser() != null && meal.getUser().getId() != null
+                    && meal.getUser().getId().equalsIgnoreCase(id_user)) {
+
+                Date fechaMeal = sdf.parse(meal.getFecha());
+
+                // Filtramos en Java comprobando que fechaMeal esté dentro del rango (inclusive)
+                if (!fechaMeal.before(fechainicio) && !fechaMeal.after(fechafin)) {
+                    comidasSemanaUsuario.add(meal);
+                }
             }
         }
-        return ResponseEntity.ok(comidasSemanaUsuario); // <--- Corrected variable name
+        return ResponseEntity.ok(comidasSemanaUsuario);
     }
+
+
+
 
     @PostMapping("/delete/meal/{id}")
     private ResponseEntity<String> delete(@PathVariable String id){
