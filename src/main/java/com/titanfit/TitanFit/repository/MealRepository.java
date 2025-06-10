@@ -10,5 +10,5 @@ import java.util.List;
 public interface MealRepository extends MongoRepository<Meal, String> {
     List<Meal> findMealsByfecha (String fecha);
     @Query("SELECT m FROM Meal m WHERE m.fecha BETWEEN :startDate AND :endDate")
-    List<Meal> findMealsBetweenDates(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<Meal> findByfechaBetween(@Param("startDate") String startDate, @Param("endDate") String endDate);
 }
